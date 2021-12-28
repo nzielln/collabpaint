@@ -358,12 +358,6 @@ sf::Clock &App::getClock() {
     return *m_clock;
 }
 
-/*! \brief Gets the selectedColor of the app
- *
- */
-sf::Color App::getPenColor() {
-    return selectedColor;
-}
 
 /*! \brief Gets the selectedColor of the app
  *
@@ -379,12 +373,6 @@ int App::getMode() {
     return selectedMode;
 }
 
-/*! \brief Sets the pen color of the app to be the color that the user inputs
- *
- */
-void App::setPenColor(sf::Color newColor) {
-    selectedColor = newColor;
-}
 
 /*! \brief Sets the background color of the app to be the color that the user inputs
  *
@@ -472,7 +460,6 @@ void App::loop() {
 void App::addClient(TCPClient *client) {
     m_client = client;
     m_client->joinServer(m_client->getIpAddress(), m_client->getPort());
-    //m_client->receiveData();
 }
 
 TCPClient *App::getClient() {
@@ -501,7 +488,7 @@ sf::Uint8 App::getColorNumber(sf::Color color) {
     }
 }
 
-sf::Uint8 App::getRadius() {
+sf::Uint8 App::getRadius() const {
     return brushRadius;
 }
 
@@ -519,5 +506,8 @@ void App::incrementBrushRadius() {
 /*! \brief Decrease brush radius by 1 iff this results in positive number
  */
 void App::decrementBrushRadius() {
-    brushRadius--;
+    if (brushRadius > 1) {
+        brushRadius--;
+    }
+
 }
