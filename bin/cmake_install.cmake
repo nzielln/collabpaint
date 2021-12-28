@@ -1,4 +1,4 @@
-# Install script for directory: /Users/nzielln/Desktop/Past Semesters/Fall 2021/SWE/finalproject-team-16/FinalProject
+# Install script for directory: /Users/nzielln/Desktop/Projects/collabpaint
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/nzielln/Desktop/Past Semesters/Fall 2021/SWE/finalproject-team-16/FinalProject/bin/_deps/sfml-build/cmake_install.cmake")
+  include("/Users/nzielln/Desktop/Projects/collabpaint/bin/_deps/sfml-build/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/nzielln/Desktop/Past Semesters/Fall 2021/SWE/finalproject-team-16/FinalProject/bin/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/nzielln/Desktop/Projects/collabpaint/bin/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
