@@ -1,0 +1,24 @@
+"/Users/nzielln/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/213.5744.254/CLion.app/Contents/bin/cmake/mac/bin/cmake" "-DCMAKE_MAKE_PROGRAM=/Users/nzielln/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/213.5744.254/CLion.app/Contents/bin/ninja/mac/ninja" -G Ninja "/Users/nzielln/Desktop/Past Semesters/Fall 2021/CS5500 - SWE/finalproject-team-16/FinalProject"
+-- The CXX compiler identification is AppleClang 13.0.0.13000029
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /Library/Developer/CommandLineTools/usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found OpenGL: /Library/Developer/CommandLineTools/SDKs/MacOSX12.0.sdk/System/Library/Frameworks/OpenGL.framework   
+-- Found OpenGL at path: /Library/Developer/CommandLineTools/SDKs/MacOSX12.0.sdk/System/Library/Frameworks/OpenGL.framework
+Could not find LIBRARY_SFML--attempting to build it
+Attempting to populate sfml
+CMake Error: The current CMakeCache.txt directory /Users/nzielln/Desktop/Past Semesters/Fall 2021/CS5500 - SWE/finalproject-team-16/FinalProject/cmake-build-build/_deps/sfml-subbuild/CMakeCache.txt is different than the directory /Users/nzielln/Desktop/Past Semesters/Fall 2021/SWE/finalproject-team-16/FinalProject/cmake-build-build/_deps/sfml-subbuild where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt
+
+CMake Error at /Users/nzielln/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/213.5744.254/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FetchContent.cmake:1005 (message):
+  CMake step for sfml failed: 1
+Call Stack (most recent call first):
+  /Users/nzielln/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/213.5744.254/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FetchContent.cmake:1146:EVAL:2 (__FetchContent_directPopulate)
+  /Users/nzielln/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/213.5744.254/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FetchContent.cmake:1146 (cmake_language)
+  CMakeLists.txt:54 (FetchContent_Populate)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/Users/nzielln/Desktop/Past Semesters/Fall 2021/CS5500 - SWE/finalproject-team-16/FinalProject/cmake-build-build/CMakeFiles/CMakeOutput.log".
+See also "/Users/nzielln/Desktop/Past Semesters/Fall 2021/CS5500 - SWE/finalproject-team-16/FinalProject/cmake-build-build/CMakeFiles/CMakeError.log".
