@@ -1,19 +1,19 @@
-## CS5500 Final Project - Collaborative Paint
+# CS5500 Final Project - Collaborative Paint
 Final project for CS5500 (Foundation to Software Engineering), a collaborative paint app that uses networking and allows multiple people to draw on a shared canvas from different addresses.
 
-# Tools and Libraries
+## Tools and Libraries
 - SFML - Main Framework
 - Nuklear - GUI
 - CMake - Build
 - Catch2 - Testing
 
-# Language
+## Language
 - C++
 
-# Main Role
+## Main Role
 Implementing the networking aspect of the project
 
-# Build Instructions:
+## Build Instructions:
 *Note: these instructions are intended for a Mac OS users. The program should function across operating systems, but may require some manual work to install SFML/OpenGL dependencies in those cases.*
 
 1. Run `cmake ..` to generate a MakeFile
