@@ -114,16 +114,11 @@ public:
 
     sf::Clock &getClock();
 
-    // Get color as a number
     static sf::Uint8 getColorNumber(sf::Color color);
 
     int getMode();
 
-    sf::Color getPenColor();
-
     sf::Color getBGColor();
-
-    void setPenColor(sf::Color newPenColor);
 
     void setBGColor(sf::Color newBGColor);
 
@@ -133,10 +128,6 @@ public:
 
     void setMode(int newMode);
 
-    // Get number as a color
-    sf::Color getColor(sf::Uint8 num);
-
-    //queue<sf::Packet> getPackets();
     void destroy();
 
     void loop();
@@ -147,7 +138,7 @@ public:
 
     void addToUndo(Command *c);
 
-    sf::Uint8 getRadius();
+    [[nodiscard]] sf::Uint8 getRadius() const;
 };
 
 #endif
