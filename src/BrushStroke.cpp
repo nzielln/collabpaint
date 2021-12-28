@@ -13,6 +13,7 @@
 #include "App.hpp"
 #include "BrushStroke.hpp"
 #include "DrawBrush.hpp"
+using namespace std;
 
 BrushStroke::BrushStroke() : Command("Draw with brush in a continual line"),
                              CompositeCommand("Draw with brush in a continual line") {}
@@ -25,7 +26,7 @@ bool BrushStroke::operator==(Command &cmd) const {
 
     // Dynamic cast to get the other BrushStroke's collection of DrawBrushes
     BrushStroke *other = dynamic_cast<BrushStroke *>(&cmd);
-    std::deque<DrawBrush> otherDraws = other->getDraws();
+    deque<DrawBrush> otherDraws = other->getDraws();
 
     if (m_draws.size() != otherDraws.size()) {
         return false;
@@ -61,7 +62,7 @@ bool BrushStroke::undo() {
 //    for (DrawBrush draw: m_draws) {
 //        draw.undo();
 //    }
-    std::stack<DrawBrush> drawStack;
+    stack<DrawBrush> drawStack;
 
     for (DrawBrush draw: m_draws) {
         drawStack.push(draw);
@@ -75,8 +76,8 @@ bool BrushStroke::undo() {
     return true;
 }
 
-std::deque<DrawBrush> BrushStroke::getDraws() {
-    return std::deque(m_draws);
+deque<DrawBrush> BrushStroke::getDraws() {
+    return deque(m_draws);
 }
 
 void BrushStroke::addAndExecuteDraw(DrawBrush newDraw) {
@@ -98,7 +99,7 @@ void BrushStroke::addAndExecuteDraw(DrawBrush newDraw) {
         interpolate(*newDraw);
         addAndExecuteDraw(*newDraw);
     } else {
-        std::cerr << "Attempted to add non-draw command to a BrushStroke" << std::endl;
+        cerr << "Attempted to add non-draw command to a BrushStroke" << endl;
     }
 }
 

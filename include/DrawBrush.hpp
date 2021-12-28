@@ -12,12 +12,13 @@
 #include <vector>
 // Project header files
 #include "Command.hpp"
+using namespace std;
 
 class DrawBrush : public Command {
 private:
     sf::Image *m_image{};
 
-    static std::string
+    static string
     generateCommandDescription(unsigned int posX, unsigned int posY, unsigned int rad, sf::Color newColor);
 
 public:
@@ -41,7 +42,7 @@ public:
     const unsigned int m_posX;
     const unsigned int m_posY;
     const unsigned int m_radius;
-    std::vector<std::vector<sf::Color>> m_prevColors;
+    vector<vector<sf::Color>> m_prevColors;
     const sf::Color m_newColor;
 };
 

@@ -12,11 +12,12 @@
 // Project header files
 #include "CompositeCommand.hpp"
 #include "Draw.hpp"
+using namespace std;
 
 // Represents the command to color a series of pixels from mouse-down to mouse-up
 class DrawStroke : public CompositeCommand {
 private:
-    std::deque<Draw> m_draws;
+    deque<Draw> m_draws;
 
     // Generate and add new draws for pixels between the two most recently added draws
     void interpolate(Draw newestDraw);
@@ -38,7 +39,7 @@ public:
     [[maybe_unused]] void addAndExecuteCommand(Command *c) override;
 
     // Returns a copy of the draws currently in this DrawStroke
-    std::deque<Draw> getDraws();
+    deque<Draw> getDraws();
 };
 
 #endif

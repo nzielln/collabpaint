@@ -13,11 +13,12 @@
 #include "CompositeCommand.hpp"
 #include "DrawBrush.hpp"
 #include "App.hpp"
+using namespace std;
 
 // Represents the command to color a series of pixels from mouse-down to mouse-up
 class BrushStroke : public CompositeCommand {
 private:
-    std::deque<DrawBrush> m_draws;
+    deque<DrawBrush> m_draws;
 
     // Generate and add new DrawBrushes to connect the two most recently added DrawBrushes
     void interpolate(DrawBrush newestDraw);
@@ -39,7 +40,7 @@ public:
     void addAndExecuteCommand(Command *c) override;
 
     // Returns a copy of the DrawBrushes currently in this BrushStroke
-    std::deque<DrawBrush> getDraws();
+    deque<DrawBrush> getDraws();
 };
 
 #endif

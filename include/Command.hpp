@@ -15,13 +15,12 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Network.hpp>
-
-
+using namespace std;
 
 // The command class
 class Command {
 public:
-    explicit Command(std::string commandDescription);
+    explicit Command(string commandDescription);
 
     virtual ~Command();
 
@@ -36,7 +35,7 @@ public:
     virtual bool undo() = 0;
 
     // Description of the command for debugging purposes
-    [[maybe_unused]] const std::string m_commandDescription;
+    [[maybe_unused]] const string m_commandDescription;
 };
 
 #endif

@@ -9,11 +9,12 @@
 #include "TCPClient.hpp"
 // Include standard library C++ libraries.
 #include <iostream>
+using namespace std;
 
 /*! \brief 	Client constructor
 *
 */
-TCPClient::TCPClient(std::string username, unsigned short port) {
+TCPClient::TCPClient(string username, unsigned short port) {
     m_username = username;
     m_port = port;
 }
@@ -22,14 +23,14 @@ TCPClient::TCPClient(std::string username, unsigned short port) {
 *
 */
 TCPClient::~TCPClient() {
-    std::cout << "Client destructor called" << std::endl;
+    cout << "Client destructor called" << endl;
 }
 
 /*! \brief 	Connects client to server
 *
 */
 bool TCPClient::joinServer(sf::IpAddress serverAddress, unsigned short serverPort) {
-    std::cout << "TCPClient will attemp to join server: " << std::endl;
+    cout << "TCPClient will attemp to join server: " << endl;
     m_serverIpAddress = serverAddress;
     m_serverPort = serverPort;
     sf::Uint8 header = NON_COMMAND;
@@ -37,16 +38,16 @@ bool TCPClient::joinServer(sf::IpAddress serverAddress, unsigned short serverPor
     // Attempt to connect to server
     int status = m_socket.connect(serverAddress, serverPort);
 
-    std::cout << "Connection Request Sent" << std::endl;
+    cout << "Connection Request Sent" << endl;
 
     // If connection is not successful
     if (status != sf::Socket::Done) {
-        std::cout << "Unable to bind -- Error: " << status << std::endl;
+        cout << "Unable to bind -- Error: " << status << endl;
         return status;
     }
 
     // If connection is successful, sent first message that will be broadcasted to everyone
-    std::string message = m_username + " connected to Server";
+    string message = m_username + " connected to Server";
     m_packet << header << m_username;
 
     m_socket.send(m_packet);
@@ -62,9 +63,9 @@ bool TCPClient::joinServer(sf::IpAddress serverAddress, unsigned short serverPor
 */
 int TCPClient::sendCommand(sf::Packet packet) {
     if (packet.getDataSize() > 0 && m_socket.send(packet) == sf::Socket::Done) {
-        std::cout << "I, " << m_username << " sent a new packet\n";
+        cout << "New packet was successfully sent to server.\n";
     } else {
-        std::cout << "Failed to send packet to server." << std::endl;
+        cout << "Failed to send packet to server." << endl;
     }
 
     // Wait to get data from server
@@ -78,7 +79,7 @@ sf::Packet TCPClient::receiveData() {
 
     sf::Packet packet;
     sf::Uint8 header, ncolor, radius;
-    std::string username;
+    string username;
     sf::Vector2i pos;
 
     int status = m_socket.receive(packet);
@@ -93,26 +94,26 @@ sf::Packet TCPClient::receiveData() {
             switch (header) {
                 case DRAWBRUSH:
                     packet >> username >> pos.x >> pos.y >> ncolor >> radius;
-                    std::cout << "Received a draw command at position (" << pos.x << ", " << pos.y << ") with radius "
-                              << std::to_string(radius) << " from " << username << "\n";
+                    cout << "Received a draw command at position (" << pos.x << ", " << pos.y << ") with radius "
+                              << to_string(radius) << " from " << username << "\n";
                     packet << header << username << pos.x << pos.y << ncolor << radius;
                     break;
                 case ERASER:
-                    packet >> username >> pos.x >> pos.y;
-                    std::cout << "Received an eraser command at position (" << pos.x << ", " << pos.y <<
-                              ") from " << username << "\n";
+                    packet >> username >> pos.x >> pos.y >> radius;
+                    cout << "Received an erase command at position (" << pos.x << ", " << pos.y <<
+                              ") with radius " << to_string(radius) << " from " << username << "\n";
                     packet << header << username << pos.x << pos.y;
                     break;
                 case CLEARSCREEN:
                     packet >> username;
-                    std::cout << "Received an clearscreen command\n";
+                    cout << "Received a clearscreen command\n";
                     packet << header << username;
                     break;
                 case NON_COMMAND:
                     break;
                 default:
                     packet >> username;
-                    std::cout << "Received a command from " << username << "\n";
+                    cout << "Received a command from " << username << "\n";
                     packet << header << username;
                     break;
             }
@@ -130,7 +131,7 @@ sf::Packet TCPClient::receiveData() {
 /*! \brief Returns client's username
 *
 */
-std::string TCPClient::getUsername() {
+string TCPClient::getUsername() {
     return m_username;
 }
 

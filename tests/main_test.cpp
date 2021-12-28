@@ -32,6 +32,7 @@
 #include "EraserStroke.hpp"
 #include "TCPServer.hpp"
 #include "TCPClient.hpp"
+using namespace std;
 
 
 TEST_CASE("App initializes members properly & successfully destroys"){
@@ -260,7 +261,7 @@ void networkingClientTask(TCPServer *server, TCPClient *client) {
 TEST_CASE("Multiple Clients can connect to server") {
     TCPServer *server = new TCPServer();
 
-    std::thread t1(networkingServerStartTask, server);
+    thread t1(networkingServerStartTask, server);
 
     while (!server->m_start) {
         // Await server start
@@ -272,7 +273,7 @@ TEST_CASE("Multiple Clients can connect to server") {
     REQUIRE(server->getPort() == 8000);
 
     TCPClient clientA("clientA", 8000);
-    std::thread t2(&networkingClientTask, server, &clientA);
+    thread t2(&networkingClientTask, server, &clientA);
 
     while (server->getClients() != 1) {
         // Await clientA join
@@ -282,10 +283,10 @@ TEST_CASE("Multiple Clients can connect to server") {
     REQUIRE(server->getClients() == 1);
 
     TCPClient clientB("clientB", 8000);
-    std::thread t3(&networkingClientTask, server, &clientB);
+    thread t3(&networkingClientTask, server, &clientB);
 
     TCPClient clientC("clientC", 8000);
-    std::thread t4(&networkingClientTask, server, &clientC);
+    thread t4(&networkingClientTask, server, &clientC);
 
     while (server->getClients() != 3) {
         // Await clientB & clientC join

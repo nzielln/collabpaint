@@ -12,6 +12,7 @@
 // Project header files
 #include "App.hpp"
 #include "ClearScreen.hpp"
+using namespace std;
 
 ClearScreen::ClearScreen(App *app) : ClearScreen(
         &app->getImage(),
@@ -25,10 +26,10 @@ ClearScreen::ClearScreen(sf::Image *image, sf::Color prevColor, sf::Color newCol
 /*! \brief 	Helper function for building a command description string using the ClearScreen's member variables
 *
 */
-std::string ClearScreen::generateCommandDescription(sf::Color prevColor, sf::Color newColor) {
-    std::stringstream ss;
-    ss << "Previous screen color was: " << std::to_string(prevColor.g)
-       << "Clearing new screen color to: " << std::to_string(newColor.g);
+string ClearScreen::generateCommandDescription(sf::Color prevColor, sf::Color newColor) {
+    stringstream ss;
+    ss << "Previous screen color was: " << to_string(prevColor.g)
+       << "Clearing new screen color to: " << to_string(newColor.g);
     return ss.str();
 }
 

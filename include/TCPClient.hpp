@@ -16,6 +16,7 @@
 // Other standard libraries
 #include <string>
 #include <vector>
+using namespace std;
 
 // DRAWBRUSH   Will also hold the x, y positions, newcolor, and radius
 // CLEARSCREEN Will also hold the newcolor for the background
@@ -29,7 +30,7 @@ class TCPClient {
 public:
 
     // Default Constructor
-    TCPClient(std::string username, unsigned short port);
+    TCPClient(string username, unsigned short port);
     // Default Destructor
     ~TCPClient();
     // Handles client attempting to join server
@@ -40,7 +41,7 @@ public:
     // Receive data from the server
     sf::Packet receiveData();
     // Get username
-    std::string getUsername();
+    string getUsername();
     // Check is client is connected to server
     bool diconnected();
     // Get IPAddress
@@ -51,7 +52,7 @@ public:
 
 private:
     // Information about our user and connection
-    std::string m_username;
+    string m_username;
     // The port which we will try to communicate from
     unsigned short m_port;
     // The server port which we will try to send information through

@@ -12,6 +12,7 @@
 #include <utility>
 #include <time.h>
 #include <unistd.h>
+using namespace std;
 
 /*! \brief
 *
@@ -21,14 +22,14 @@ TCPServer::TCPServer() {}
 /*! \brief 	Connects server
 *
 */
-bool TCPServer::connectServer(std::string name, sf::IpAddress address, unsigned short port) {
-    m_name = std::move(name);
+bool TCPServer::connectServer(string name, sf::IpAddress address, unsigned short port) {
+    m_name = move(name);
     m_ipAddress = address;
     m_port = port;
     m_status = m_listener.listen(m_port);
 
     if (m_status != sf::Socket::Done) {
-        std::cout << "Unable to bind -- Error: " << m_status << std::endl;
+        cout << "Unable to bind -- Error: " << m_status << endl;
         return false;
     } else {
         m_selector.add(m_listener);
@@ -43,7 +44,7 @@ bool TCPServer::connectServer(std::string name, sf::IpAddress address, unsigned 
 *
 */
 TCPServer::~TCPServer() {
-    std::cout << "Server Destructor" << std::endl;
+    cout << "Server Destructor" << endl;
 }
 
 /*! \brief 	Starts the server
@@ -52,7 +53,7 @@ TCPServer::~TCPServer() {
 */
 // A little long but it kinda works so imma leave it for now :)
 bool TCPServer::start() {
-    std::cout << "Starting TCP Network server" << std::endl;
+    cout << "Starting TCP Network server" << endl;
 
     while (m_start) {
 
@@ -69,14 +70,14 @@ bool TCPServer::start() {
                     m_clients.push_back(new_client);
                     m_selector.add(*new_client);
 
-                    std::cout << "New connection to " << new_client->getRemoteAddress() << " has been completed.\n";
+                    cout << "New connection to " << new_client->getRemoteAddress() << " completed.\n";
 
                     // Update client on all data in history
                     joiningClient(new_client);
 
                 } else {
-                    std::cout << "Could not initiate new connection from IP Address: " << new_client->getRemoteAddress()
-                              << std::endl;
+                    cout << "Could not initiate new connection from IP Address: " << new_client->getRemoteAddress()
+                         << endl;
 
                     // If new connection not possible, delete client object we created
                     delete new_client;
@@ -90,7 +91,7 @@ bool TCPServer::start() {
                     // Possible data in the packet, may not all be filled but we have to initialize them first
                     // before unpacking from packet
                     sf::TcpSocket &client = *c;
-                    std::string username;
+                    string username;
                     sf::Vector2i pos;
                     sf::Uint8 header, ncolor, radius;
 
@@ -99,7 +100,7 @@ bool TCPServer::start() {
 
                         // If ready, get packet sent
                         sf::Packet packet;
-                        std::map<std::string, sf::TcpSocket *>::iterator it;
+                        map<string, sf::TcpSocket *>::iterator it;
                         m_status = client.receive(packet);
 
                         //Receive message
@@ -109,23 +110,24 @@ bool TCPServer::start() {
                             it = m_activeClients.find(username);
 
                             if (it == m_activeClients.end()) {
-                                m_activeClients.insert(std::pair<std::string, sf::TcpSocket *>(username, &client));
+                                m_activeClients.insert(pair<string, sf::TcpSocket *>(username, &client));
                             }
 
                             if (header == DRAWBRUSH) {
                                 packet >> pos.x >> pos.y >> ncolor >> radius;
-                                std::cout << username << " sent a new draw packet. Position: (" << pos.x << ", "
-                                          << pos.y << "), radius" << std::to_string(radius) << std::endl;
+                                cout << username << " sent a new draw packet at position: (" << pos.x << ", "
+                                     << pos.y << "), radius" << to_string(radius) << endl;
                                 packet << header << username << pos.x << pos.y << ncolor << radius;
                             } else if (header == ERASER) {
-                                packet >> pos.x >> pos.y;
-                                std::cout << username << " sent a new erase packet. Position: (" << pos.x << ", " << pos.y << ")\n";
-                                packet << header << username << pos.x << pos.y;
+                                packet >> pos.x >> pos.y >> radius;
+                                cout << username << " sent a new erase packet as position: (" << pos.x << ", "
+                                     << pos.y << "), radius" << to_string(radius) << endl;
+                                packet << header << username << pos.x << pos.y << radius;
                             } else if (header == CLEARSCREEN) {
-                                std::cout << username << " sent a new clearscreen packet\n";
+                                cout << username << " sent a new clearscreen packet\n";
                                 packet << header << username;
                             } else {
-                                std::cout << username << " sent a new packet\n";
+                                cout << username << " sent a new packet\n";
                                 packet << header << username;
                             }
                             // Add packet to vector of packets and broadcast it to everyone else
@@ -175,7 +177,7 @@ int TCPServer::stop() {
 *
 */
 int TCPServer::joiningClient(sf::TcpSocket *client) {
-    std::cout << "Updating new client\n";
+    cout << "Updating new client\n";
 
 
     // Iterate through every packet sent and send it to the client.
@@ -190,7 +192,7 @@ int TCPServer::joiningClient(sf::TcpSocket *client) {
 *
 */
 int TCPServer::removeClient(sf::TcpSocket *socket) {
-    std::map<std::string, sf::TcpSocket *>::iterator it;
+    map<string, sf::TcpSocket *>::iterator it;
     sf::TcpSocket toremove;
     for (it = m_activeClients.begin(); it != m_activeClients.end(); ++it) {
         if (it->second == socket) {
@@ -202,13 +204,13 @@ int TCPServer::removeClient(sf::TcpSocket *socket) {
         }
     }
 
-    for (auto i = 0; i < m_clients.size(); i++)
-        if (m_clients[i] == socket) {
-            m_selector.remove(*m_clients[i]);
+    for (auto & m_client : m_clients)
+        if (m_client == socket) {
+            m_selector.remove(*m_client);
             break;
         }
 
-    std::remove(m_clients.begin(), m_clients.end(), socket);
+    remove(m_clients.begin(), m_clients.end(), socket);
 
     return 0;
 }
@@ -216,19 +218,19 @@ int TCPServer::removeClient(sf::TcpSocket *socket) {
 /*! \brief Sends a packet to all connected clients
 *
 */
-int TCPServer::broadcastCommandPacket(const std::string &username, sf::Packet packet) {
-    std::cout << "FROM: " << username << std::endl;
+int TCPServer::broadcastCommandPacket(const string &username, sf::Packet packet) {
+    cout << "From: " << username << endl;
 
     // Send the data to all clients
     for (auto &m_activeClient: m_activeClients) {
         // TODO - Don't send it to the client that just sent it...
         if (m_activeClient.first != username) {
-            std::cout << "SENDING TO: " << m_activeClient.first << std::endl;
+            cout << "Sending to: " << m_activeClient.first << endl;
             sf::TcpSocket &client = *m_activeClient.second;
             if (client.send(packet) != sf::Socket::Done) {
-                std::cout << "Could not send packet on broadcast\n";
+                cout << "Could not send packet to clients\n";
             } else {
-                std::cout << "Packet sent\n";
+                cout << "Packet sent\n";
             }
         }
     }

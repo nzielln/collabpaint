@@ -9,11 +9,12 @@
 #include <utility>
 // Project header files
 #include "Command.hpp"
+using namespace std;
 
 /*! \brief 	N/A
 *		
 */
-Command::Command(std::string commandDescription) : m_commandDescription(std::move(commandDescription)) {}
+Command::Command(string commandDescription) : m_commandDescription(move(commandDescription)) {}
 
 /*! \brief 	N/A
 *		

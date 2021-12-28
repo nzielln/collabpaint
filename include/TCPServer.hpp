@@ -29,7 +29,7 @@
 #include <string>
 #include <vector>
 #include <map>
-
+using namespace std;
 
 // Create a non-blocking TCP server
 class TCPServer {
@@ -40,7 +40,7 @@ public:
     ~TCPServer();
     // Start the server
     bool start();
-    bool connectServer(std::string name, sf::IpAddress address, unsigned short port);
+    bool connectServer(string name, sf::IpAddress address, unsigned short port);
     // Stops the server from running and removes all clients
     int stop();
     unsigned short getPort();
@@ -55,13 +55,13 @@ private:
     // What to do when the client leaves the server
     int removeClient(sf::TcpSocket *socket);
 
-    //int broadcastMessage(std::string s, sf::IpAddress ip);
+    //int broadcastMessage(string s, sf::IpAddress ip);
     // Sends a new packet to all connected clients
-    int broadcastCommandPacket(const std::string &username, sf::Packet packet);
+    int broadcastCommandPacket(const string &username, sf::Packet packet);
 
     // Information about the server
     int m_status;
-    std::string m_name;
+    string m_name;
     unsigned short m_port;
     // SocketSelector
     sf::SocketSelector m_selector;
@@ -72,16 +72,16 @@ private:
     sf::TcpListener m_listener;
     // Dictionary to store each clients commands
     // Vector to keep track of clients
-    std::vector<sf::TcpSocket *> m_clients;
+    vector<sf::TcpSocket *> m_clients;
     // Store packets and client ids
-    std::map<std::string, std::vector<sf::Packet>> client_commands;
+    map<string, vector<sf::Packet>> client_commands;
 
     // A data structure to hold all of the clients.
-    std::map<std::string, sf::TcpSocket *> m_activeClients;
+    map<string, sf::TcpSocket *> m_activeClients;
     // A data structure to hold all of the packets
-    std::vector<sf::Packet> m_packetHistory;
+    vector<sf::Packet> m_packetHistory;
     // A data structure to hold all of the messages sent
-    std::vector<Command> m_commandshistory;
+    vector<Command> m_commandshistory;
 
 };
 

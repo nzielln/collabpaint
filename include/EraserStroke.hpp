@@ -12,11 +12,12 @@
 // Project header files
 #include "CompositeCommand.hpp"
 #include "Eraser.hpp"
+using namespace std;
 
 // Represents the command to color a series of pixels from mouse-down to mouse-up
 class EraserStroke : public CompositeCommand {
 private:
-    std::deque<Eraser> m_eraser;
+    deque<Eraser> m_eraser;
 
     // Generate and add new draws for pixels between the two most recently added draws
     void interpolate(Eraser newestEraser);
@@ -38,7 +39,7 @@ public:
     [[maybe_unused]] void addAndExecuteCommand(Command *c) override;
 
     // Returns a copy of the draws currently in this EraserStroke
-    std::deque<Eraser> getErasers();
+    deque<Eraser> getErasers();
 };
 
 #endif

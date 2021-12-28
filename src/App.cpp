@@ -41,10 +41,12 @@
 #include "CompositeCommand.hpp"
 #include "DrawStroke.hpp"
 
+using namespace std;
+
 struct nk_colorf bg;
 struct nk_context *ctx;
 
-const std::vector<Mode> App::PRESET_MODES = { // NOLINT(cert-err58-cpp)
+const vector<Mode> App::PRESET_MODES = { // NOLINT(cert-err58-cpp)
         {
                 .label = "Draw",
                 .mode = DRAW_MODE
@@ -54,7 +56,7 @@ const std::vector<Mode> App::PRESET_MODES = { // NOLINT(cert-err58-cpp)
                 .mode = ERASE_MODE
         }
 };
-const std::vector<PresetColor> App::PRESET_COLORS = { // NOLINT(cert-err58-cpp,cppcoreguidelines-interfaces-global-init)
+const vector<PresetColor> App::PRESET_COLORS = { // NOLINT(cert-err58-cpp,cppcoreguidelines-interfaces-global-init)
         {
                 .label = "Black",
                 .color = sf::Color::Black
@@ -188,7 +190,7 @@ void App::drawLayout() {
         if (nk_button_label(ctx, "-")) {
             decrementBrushRadius();
         }
-        nk_label(ctx, std::to_string(brushRadius).c_str(), NK_TEXT_CENTERED);
+        nk_label(ctx, to_string(brushRadius).c_str(), NK_TEXT_CENTERED);
         if (nk_button_label(ctx, "+")) {
             incrementBrushRadius();
         }
@@ -234,16 +236,16 @@ void App::addCommand(Command *c) {
 /*! \brief Add the given CompositeCommand to inProgressCommands associated with the given username
 *
 */
-void App::startComposite(const std::string &username, CompositeCommand *c) {
-    m_inProgressCommands.emplace(std::pair<std::string, CompositeCommand *>(username, c));
+void App::startComposite(const string &username, CompositeCommand *c) {
+    m_inProgressCommands.emplace(pair<string, CompositeCommand *>(username, c));
 }
 
 /*! \brief End and destroy the CompositeCommand associated with the given username
 *
 */
-void App::endComposite(const std::string &username) {
-    std::vector<CompositeCommand *> todel;
-    std::map<std::string, CompositeCommand *>::iterator it;
+void App::endComposite(const string &username) {
+    vector<CompositeCommand *> todel;
+    map<string, CompositeCommand *>::iterator it;
     for (it = m_inProgressCommands.begin(); it != m_inProgressCommands.end(); ++it) {
         if (it->first == username) {
             todel.push_back(it->second);
@@ -260,13 +262,13 @@ void App::endComposite(const std::string &username) {
 /*! \brief 	Add and execute the given Command to the CompositeCommand associated with the given username
 *
 */
-void App::addToComposite(const std::string &username, Command *c) {
+void App::addToComposite(const string &username, Command *c) {
     try {
         CompositeCommand *composite = m_inProgressCommands.at(username);
         composite->addAndExecuteCommand(c);
         m_commands.push_front(c);
-    } catch (std::out_of_range) {
-        std::cerr << username << " has no CompositeCommand to add to" << std::endl;
+    } catch (out_of_range) {
+        cerr << username << " has no CompositeCommand to add to" << endl;
     }
 }
 
@@ -517,8 +519,5 @@ void App::incrementBrushRadius() {
 /*! \brief Decrease brush radius by 1 iff this results in positive number
  */
 void App::decrementBrushRadius() {
-    if (brushRadius > 1) {
-        brushRadius--;
-    }
-
+    brushRadius--;
 }

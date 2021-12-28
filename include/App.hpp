@@ -21,6 +21,7 @@
 #include "TCPClient.hpp"
 
 #include "CompositeCommand.hpp"
+using namespace std;
 
 // Some values for our GUI
 enum {
@@ -42,9 +43,9 @@ private:
 
 // Member variables
     // Queue stores the next command to do.
-    std::deque<Command *> m_commands;
+    deque<Command *> m_commands;
     // Stack that stores the last action to occur.
-    std::stack<Command *> m_undo;
+    stack<Command *> m_undo;
     // Main image
     sf::Image *m_image;
     // Create a sprite that we overlay on top of the texture.
@@ -77,27 +78,27 @@ public:
     sf::Color selectedColor = sf::Color::Black;
     sf::Color backgroundColor = sf::Color::White;
     int selectedMode = DRAW_MODE;
-    std::map<std::string, CompositeCommand *> m_inProgressCommands;
-    std::queue<sf::Packet> m_packets;
+    map<string, CompositeCommand *> m_inProgressCommands;
+    queue<sf::Packet> m_packets;
 
 // Globals
     unsigned static int const MAX_REMEMBERED_COMMANDS = 100;
     unsigned static int const WINDOW_WIDTH = 800, WINDOW_HEIGHT = 800;
     unsigned static int const GUI_WIDTH = 220;
     unsigned static int const FRAMES_PER_SECOND = 24;
-    static const std::vector<Mode> PRESET_MODES;
-    static const std::vector<PresetColor> PRESET_COLORS;
+    static const vector<Mode> PRESET_MODES;
+    static const vector<PresetColor> PRESET_COLORS;
 
 // Member functions
     App(void (*updateFunction)(App *), void (*drawFunction)(App *));
 
     void addCommand(Command *c);
 
-    void startComposite(const std::string &username, CompositeCommand *c);
+    void startComposite(const string &username, CompositeCommand *c);
 
-    void endComposite(const std::string &username);
+    void endComposite(const string &username);
 
-    void addToComposite(const std::string &username, Command *c);
+    void addToComposite(const string &username, Command *c);
 
     void undoCommand();
 
@@ -135,7 +136,7 @@ public:
     // Get number as a color
     sf::Color getColor(sf::Uint8 num);
 
-    //std::queue<sf::Packet> getPackets();
+    //queue<sf::Packet> getPackets();
     void destroy();
 
     void loop();

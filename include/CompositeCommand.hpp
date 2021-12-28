@@ -11,11 +11,12 @@
 #include <string>
 #include <deque>
 #include "Command.hpp"
+using namespace std;
 
 // The command class
 class CompositeCommand : public virtual Command {
 public:
-    explicit CompositeCommand(std::string commandDescription);
+    explicit CompositeCommand(string commandDescription);
 
     // Adds a new command to the collection
     virtual void addAndExecuteCommand(Command *c) = 0;

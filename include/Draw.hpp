@@ -18,13 +18,14 @@
 // Project header files
 #include "Command.hpp"
 #include "App.hpp"
+using namespace std;
 
 // Represents the command to color a single pixel
 class Draw : public Command {
 private:
     sf::Image *m_image{};
 
-    static std::string
+    static string
     generateCommandDescription(unsigned int posX, unsigned int posY, sf::Color prevColor, sf::Color newColor);
 
 public:

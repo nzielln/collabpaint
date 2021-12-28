@@ -9,8 +9,9 @@
 #include <utility>
 // Project header files
 #include "CompositeCommand.hpp"
+using namespace std;
 
 /*! \brief 	N/A
 *		
 */
-CompositeCommand::CompositeCommand(std::string commandDescription) : Command(std::move(commandDescription)) {}
+CompositeCommand::CompositeCommand(string commandDescription) : Command(move(commandDescription)) {}

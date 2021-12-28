@@ -13,6 +13,7 @@
 // Project header files
 #include "DrawStroke.hpp"
 #include "Draw.hpp"
+using namespace std;
 
 DrawStroke::DrawStroke() : Command("Draw in a continual line"), CompositeCommand("Draw in a continual line") {}
 
@@ -24,7 +25,7 @@ bool DrawStroke::operator==(Command &cmd) const {
 
     // Dynamic cast to get the other DrawStroke's collection of Draws
     DrawStroke *other = dynamic_cast<DrawStroke *>(&cmd);
-    std::deque<Draw> otherDraws = other->getDraws();
+    deque<Draw> otherDraws = other->getDraws();
 
     if (m_draws.size() != otherDraws.size()) {
         return false;
@@ -64,8 +65,8 @@ bool DrawStroke::undo() {
     return true;
 }
 
-std::deque<Draw> DrawStroke::getDraws() {
-    return std::deque(m_draws);
+deque<Draw> DrawStroke::getDraws() {
+    return deque(m_draws);
 }
 
 void DrawStroke::addAndExecuteDraw(Draw newDraw) {
@@ -87,7 +88,7 @@ void DrawStroke::addAndExecuteDraw(Draw newDraw) {
         interpolate(*newDraw);
         addAndExecuteDraw(*newDraw);
     } else {
-        std::cerr << "Attempted to add non-draw command to a DrawStroke" << std::endl;
+        cerr << "Attempted to add non-draw command to a DrawStroke" << endl;
     }
 }
 

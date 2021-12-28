@@ -18,24 +18,27 @@
 // Project header files
 #include "Command.hpp"
 #include "App.hpp"
+using namespace std;
 
 // Represents the command to color a single pixel
 class Eraser : public Command {
 private:
     sf::Image *m_image{};
 
-    static std::string
-    generateCommandDescription(unsigned int posX, unsigned int posY, sf::Color prevColor, sf::Color newColor);
+    static string
+    generateCommandDescription_a(unsigned int posX, unsigned int posY, unsigned int rad, sf::Color prevColor, sf::Color newColor);
+    static string generateCommandDescription_b(unsigned int posX, unsigned int posY, unsigned int rad, sf::Color newColor);
+
 
 public:
     // Construct Draw from App values
     explicit Eraser(App *app);
 
     // Grab prevColor from image
-    Eraser(sf::Image *image, unsigned int posX, unsigned int posY, sf::Color newColor);
+    Eraser(sf::Image *image, unsigned int posX, unsigned int posY, unsigned int rad, sf::Color newColor);
 
     // Default constructor
-    Eraser(sf::Image *image, unsigned int posX, unsigned int posY, sf::Color prevColor, sf::Color newColor);
+    Eraser(sf::Image *image, unsigned int posX, unsigned int posY, unsigned int rad, sf::Color prevColor, sf::Color newColor);
 
     ~Eraser() override;
 
@@ -50,8 +53,10 @@ public:
     // These are safe to expose without a getter/setter because they are constant
     const unsigned int m_posX;
     const unsigned int m_posY;
-    const sf::Color m_prevColor;
-    const sf::Color m_newColor;
+    const unsigned int m_radius;
+    //sf::Color m_prevColor;
+    vector<vector<sf::Color>> m_prevColors;
+    sf::Color m_newColor;
 };
 
 #endif

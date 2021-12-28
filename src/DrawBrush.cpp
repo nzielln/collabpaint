@@ -13,6 +13,7 @@
 // Project header files
 #include "App.hpp"
 #include "DrawBrush.hpp"
+using namespace std;
 
 DrawBrush::DrawBrush(App *app) : DrawBrush(
         &app->getImage(),
@@ -29,11 +30,11 @@ DrawBrush::DrawBrush(sf::Image *image, unsigned int posX, unsigned int posY, uns
     unsigned int minX = m_posX - m_radius;
     unsigned int minY = m_posY - m_radius;
 
-    m_prevColors.resize(2 * rad, std::vector<sf::Color>(2 * rad));
+    m_prevColors.resize(2 * rad, vector<sf::Color>(2 * rad));
 
     for (unsigned int i = 0; i < 2 * rad; i++) {
         for (unsigned int j = 0; j < 2 * rad; j++) {
-            if (std::sqrt((i - m_radius) * (i - m_radius) + (j - m_radius) * (j - m_radius)) <= m_radius
+            if (sqrt((i - m_radius) * (i - m_radius) + (j - m_radius) * (j - m_radius)) <= m_radius
                 && minX + i >= 0 && minX + i < App::WINDOW_WIDTH && minY + j >= 0 && minY + j < App::WINDOW_HEIGHT) {
                 m_prevColors[i][j] = m_image->getPixel(minX + i, minY + j);
             }
@@ -46,14 +47,14 @@ DrawBrush::DrawBrush(sf::Image *image, unsigned int posX, unsigned int posY, uns
 * using the a Draw's member variables
 *
 */
-std::string DrawBrush::generateCommandDescription(
+string DrawBrush::generateCommandDescription(
         unsigned int posX, unsigned int posY, unsigned int rad, sf::Color newColor) {
-    std::stringstream ss;
-    ss << "Color pixel (x=" << std::to_string(posX)
-       << ", y=" << std::to_string(posY)
-       << ") to (r=" << std::to_string(newColor.r) << ", g=" << std::to_string(newColor.g) << ", b="
-       << std::to_string(newColor.b) << ")"
-       << "with radius " << std::to_string(rad);
+    stringstream ss;
+    ss << "Color pixel (x=" << to_string(posX)
+       << ", y=" << to_string(posY)
+       << ") to (r=" << to_string(newColor.r) << ", g=" << to_string(newColor.g) << ", b="
+       << to_string(newColor.b) << ")"
+       << "with radius " << to_string(rad);
     return ss.str();
 }
 
@@ -82,7 +83,7 @@ bool DrawBrush::execute() {
 
     for (unsigned int i = 0; i < size; i++) {
         for (unsigned int j = 0; j < size; j++) {
-            if (std::sqrt((i - m_radius) * (i - m_radius) + (j - m_radius) * (j - m_radius)) <= m_radius
+            if (sqrt((i - m_radius) * (i - m_radius) + (j - m_radius) * (j - m_radius)) <= m_radius
                 && minX + i >= 0 && minX + i < App::WINDOW_WIDTH && minY + j >= 0 && minY + j < App::WINDOW_HEIGHT) {
                 m_image->setPixel(minX + i, minY + j, m_newColor);
             }
@@ -102,7 +103,7 @@ bool DrawBrush::undo() {
 
     for (unsigned int i = 0; i < size; i++) {
         for (unsigned int j = 0; j < size; j++) {
-            if (std::sqrt((i - m_radius) * (i - m_radius) + (j - m_radius) * (j - m_radius)) <= m_radius) {
+            if (sqrt((i - m_radius) * (i - m_radius) + (j - m_radius) * (j - m_radius)) <= m_radius) {
                 m_image->setPixel(minX + i, minY + j, m_prevColors[i][j]);
             }
         }

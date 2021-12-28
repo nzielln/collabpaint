@@ -13,6 +13,7 @@
 // Project header files
 #include "Draw.hpp"
 #include "App.hpp"
+using namespace std;
 
 // See comment in Draw.hpp
 Draw::Draw(App *app) : Draw(
@@ -31,15 +32,15 @@ Draw::Draw(sf::Image *image, unsigned int posX, unsigned int posY, sf::Color pre
 /*! \brief 	Helper function for building a command description string using the Draw's member variables
 *
 */
-std::string Draw::generateCommandDescription(
+string Draw::generateCommandDescription(
         unsigned int posX, unsigned int posY, sf::Color prevColor, sf::Color newColor) {
-    std::stringstream ss;
-    ss << "Color pixel (x=" << std::to_string(posX)
-       << ", y=" << std::to_string(posY)
-       << ") from (r=" << std::to_string(prevColor.r) << ", g=" << std::to_string(prevColor.g) << ", b="
-       << std::to_string(prevColor.b)
-       << ") to (r=" << std::to_string(newColor.r) << ", g=" << std::to_string(newColor.g) << ", b="
-       << std::to_string(newColor.b) << ")";
+    stringstream ss;
+    ss << "Color pixel (x=" << to_string(posX)
+       << ", y=" << to_string(posY)
+       << ") from (r=" << to_string(prevColor.r) << ", g=" << to_string(prevColor.g) << ", b="
+       << to_string(prevColor.b)
+       << ") to (r=" << to_string(newColor.r) << ", g=" << to_string(newColor.g) << ", b="
+       << to_string(newColor.b) << ")";
     return ss.str();
 }
 

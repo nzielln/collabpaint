@@ -23,20 +23,21 @@
 #include "TCPClient.hpp"
 #include "Eraser.hpp"
 #include "EraserStroke.hpp"
+using namespace std;
 
 
-std::map<std::string, CompositeCommand*> incomingCommands;
+map<string, CompositeCommand*> incomingCommands;
 
 void executeReceivedCommands(App *app) {
     sf::Uint8 header, ncolor, radius;
     sf::Vector2i pos;
-    std::string name, username;
+    string name, username;
     DrawBrush *db;
     Eraser *er;
     sf::Color c;
     ClearScreen *cs;
     sf::Packet p = app->getClient()->receiveData();
-    std::map<std::string, CompositeCommand*>::iterator it;
+    map<string, CompositeCommand*>::iterator it;
     p >> header >> username;
 
     switch (header) {
@@ -44,27 +45,22 @@ void executeReceivedCommands(App *app) {
             p >> pos.x >> pos.y >> ncolor >> radius;
             db = new DrawBrush(&app->getImage(), pos.x, pos.y, radius, App::PRESET_COLORS[ncolor - 1].color);
             db->execute();
-            std::cout << "DRAW COMMAND DONE " << username << std::endl;
             app->addToUndo(db);
             break;
         case ERASER:
-            p >> pos.x >> pos.y;
-            er = new Eraser(&app->getImage(), pos.x, pos.y, app->getBGColor());
+            p >> pos.x >> pos.y >> radius;
+            er = new Eraser(&app->getImage(), pos.x, pos.y, radius, app->getBGColor());
             er->execute();
-            std::cout << "ERASE COMMAND DONE " << username << std::endl;
             app->addToUndo(er);
         case CLEARSCREEN:
             cs = new ClearScreen(&app->getImage(), app->selectedColor, app->getBGColor());
             cs->execute();
-            std::cout << "CLEAR COMMAND DONE " << username << std::endl;
             app->addToUndo(cs);
         case UNDO:
             app->undoCommand();
-            std::cout << "UNDO DONE " << username << std::endl;
             break;
         case REDO:
             app->redoCommand();
-            std::cout << "REDO DONE " << username << std::endl;
             break;
         default:
             break;
@@ -91,13 +87,13 @@ void update(App *app) {
         // For storing packet data
         sf::Packet packet;
         sf::Uint8 header;
-        std::string message;
-        std::string username = app->getClient()->getUsername();
+        string message;
+        string username = app->getClient()->getUsername();
 
         // Respond to key events
         while (app->getWindow().pollEvent(event)) {
             // Thread for handling incoming commands
-            std::thread net(executeReceivedCommands, app);
+            thread net(executeReceivedCommands, app);
             net.join();
 
             if (event.type == sf::Event::KeyReleased) {
@@ -128,7 +124,7 @@ void update(App *app) {
                         break;
                     case sf::Keyboard::Z:
                         packet.clear();
-                        std::cout << "Undo" << std::endl;
+                        cout << "Undo" << endl;
                         header = UNDO;
                         packet << header << username;
                         app->getClient()->sendCommand(packet);
@@ -148,13 +144,13 @@ void update(App *app) {
                         app->addCommand(new ClearScreen(app));
                         app->getClient()->sendCommand(packet);
                         break;
-                    case sf::Keyboard::Equal:
+                    case sf::Keyboard::RBracket:
                         app->brushRadius++;
-                        std::cout << "Radius increase" << std::endl;
+                        cout << "Radius increase\n";
                         break;
-                    case sf::Keyboard::Hyphen:
+                    case sf::Keyboard::LBracket:
                         app->brushRadius--;
-                        std::cout << "Radius decrease" << std::endl;
+                        cout << "Radius decrease\n";
                         break;
                     case sf::Keyboard::Escape:
                         app->getClient()->getSocket()->disconnect();
@@ -166,7 +162,7 @@ void update(App *app) {
                        app->getWindow().hasFocus()) { // Begin new CompositeCommand on initial mouse down
                 packet.clear();
                 CompositeCommand *cc;
-                std::map<std::string, CompositeCommand*>::iterator it;
+                map<string, CompositeCommand*>::iterator it;
 
                 if (app->selectedMode == DRAW_MODE) {
                     cc = new BrushStroke();
@@ -175,7 +171,7 @@ void update(App *app) {
                     cc = new EraserStroke();
                     header = START_ERASERSTROKE;
                 } else {
-                    std::cerr << "App in unhandled mode" << std::endl;
+                    cerr << "App in unhandled mode" << endl;
                     return;
                 }
 
@@ -198,7 +194,7 @@ void update(App *app) {
                 } else if (app->selectedMode == ERASE_MODE) {
                     header = END_ERASERSTROKE;
                 } else {
-                    std::cerr << "App in unhandled mode" << std::endl;
+                    cerr << "App in unhandled mode" << endl;
                     return;
                 }
 
@@ -237,9 +233,9 @@ void update(App *app) {
                     Eraser *e = new Eraser(app);
                     cmd = e;
                     header = ERASER;
-                    packet << header << username << app->mouseX << app->mouseY;
+                    packet << header << username << app->mouseX << app->mouseY << app->brushRadius;
                 } else {
-                    std::cerr << "App in unhandled mode" << std::endl;
+                    cerr << "App in unhandled mode" << endl;
                     return;
                 }
 
@@ -269,23 +265,23 @@ void draw(App *app) {
 int main() {
 
     // Stores a role of either a server or client user.
-    std::string role;
+    string role;
 
     // Set the role
-    std::cout << "Enter (s) for Server, Enter (c) for client: " << std::endl;
-    std::cin >> role;
+    cout << "Enter (s) for Server, Enter (c) for Client: " << endl;
+    cin >> role;
 
     if (role[0] == 's' || role[0] == 'S') {
         TCPServer server;
         int port;
-        std::cout << "Which port would you like to connect to? \n";
-        std::cin >> port;
-        bool connected = server.connectServer("Server Name", sf::IpAddress::getLocalAddress(), port);
+        cout << "Which port would you like to connect to? \n";
+        cin >> port;
+        bool connected = server.connectServer("Server", sf::IpAddress::getLocalAddress(), port);
 
         while (!connected) {
-            std::cout << "Try a different port: \n";
-            std::cin >> port;
-            connected = server.connectServer("Server Name", sf::IpAddress::getLocalAddress(), port);
+            cout << "Sorry, that port isn't available. Try a different port: \n";
+            cin >> port;
+            connected = server.connectServer("Server", sf::IpAddress::getLocalAddress(), port);
 
         }
 
@@ -293,12 +289,12 @@ int main() {
         App app = App(&update, &draw);
 
         // Create a client and have them join
-        std::string uname;
+        string uname;
         unsigned short port;
-        std::cout << "Enter your username: ";
-        std::cin >> uname;
-        std::cout << "Which port will you try? (e.g. 50001-50010):";
-        std::cin >> port;
+        cout << "Enter your username: ";
+        cin >> uname;
+        cout << "Which port will you try? (e.g. 4000):";
+        cin >> port;
         TCPClient me(uname, port);
         app.getWindow().setTitle(uname + "'s Mini App");
         app.addClient(&me);

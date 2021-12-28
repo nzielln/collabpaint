@@ -15,6 +15,7 @@
 #include "App.hpp"
 #include "EraserStroke.hpp"
 #include "Eraser.hpp"
+using namespace std;
 
 EraserStroke::EraserStroke() : Command("Erase in a continual line"), CompositeCommand("Erase in a continual line") {}
 
@@ -26,7 +27,7 @@ bool EraserStroke::operator==(Command &cmd) const {
 
     // Dynamic cast to get the other EraserStroke's collection of Draws
     EraserStroke *other = dynamic_cast<EraserStroke *>(&cmd);
-    std::deque<Eraser> otherErasers = other->getErasers();
+    deque<Eraser> otherErasers = other->getErasers();
 
     if (m_eraser.size() != otherErasers.size()) {
         return false;
@@ -66,8 +67,8 @@ bool EraserStroke::undo() {
     return true;
 }
 
-std::deque<Eraser> EraserStroke::getErasers() {
-    return std::deque(m_eraser);
+deque<Eraser> EraserStroke::getErasers() {
+    return deque(m_eraser);
 }
 
 void EraserStroke::addAndExecuteDraw(Eraser newEraser) {
@@ -89,7 +90,7 @@ void EraserStroke::addAndExecuteDraw(Eraser newEraser) {
         interpolate(*newEraser);
         addAndExecuteDraw(*newEraser);
     } else {
-        std::cerr << "Attempted to add non-draw command to a EraserStroke" << std::endl;
+        cerr << "Attempted to add non-draw command to a EraserStroke" << endl;
     }
 }
 
@@ -116,7 +117,7 @@ void EraserStroke::interpolate(Eraser newestEraser) {
                    static_cast<int>(y1) :
                    static_cast<int>(y1 - round(i * distY / distance));
 
-        Eraser interEraser = Eraser(newestEraser.getImage(), newX, newY, newestEraser.m_newColor);
+        Eraser interEraser = Eraser(newestEraser.getImage(), newX, newY, newestEraser.m_radius, newestEraser.m_newColor);
 
         addAndExecuteDraw(interEraser);
     }
