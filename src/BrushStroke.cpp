@@ -59,9 +59,6 @@ bool BrushStroke::execute() {
 *
 */
 bool BrushStroke::undo() {
-//    for (DrawBrush draw: m_draws) {
-//        draw.undo();
-//    }
     stack<DrawBrush> drawStack;
 
     for (DrawBrush draw: m_draws) {

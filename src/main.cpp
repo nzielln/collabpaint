@@ -124,7 +124,6 @@ void update(App *app) {
                         break;
                     case sf::Keyboard::Z:
                         packet.clear();
-                        cout << "Undo" << endl;
                         header = UNDO;
                         packet << header << username;
                         app->getClient()->sendCommand(packet);

@@ -155,6 +155,7 @@ App::App(void (*updateFunction)(App *), void (*drawFunction)(App *)) {
 *
 */
 void App::drawLayout() {
+
     if (nk_begin(ctx, "Settings", nk_rect(0, 0, GUI_WIDTH, WINDOW_HEIGHT),
                  NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
 
@@ -162,9 +163,11 @@ void App::drawLayout() {
         nk_layout_row_static(ctx, 30, 90, 2);
         if (nk_button_label(ctx, "Undo")) {
             undoCommand();
+
         }
         if (nk_button_label(ctx, "Redo")) {
             redoCommand();
+
         }
 
         // Spacer
@@ -261,7 +264,6 @@ void App::addToComposite(const string &username, Command *c) {
     try {
         CompositeCommand *composite = m_inProgressCommands.at(username);
         composite->addAndExecuteCommand(c);
-        //m_commands.push_front(c);
     } catch (out_of_range) {
         cerr << username << " has no CompositeCommand to add to" << endl;
     }
@@ -305,7 +307,6 @@ void App::undoCommand() {
 
     if (!m_commands.empty()) {
         m_commands.front()->undo();
-        cout << m_commands.front()->m_commandDescription << endl;
 
         m_undo.push(m_commands.front());
         m_commands.pop_front();
