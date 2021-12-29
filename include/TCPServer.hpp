@@ -7,18 +7,6 @@
 #ifndef TCPSERVER_HPP
 #define TCPSERVER_HPP
 
-// We are going to build a TCP Server abstracted
-// over SFML's sockets. We can think of this as a 'Network Manager' class for us.
-// Building a general network manager is really cool, because
-// we can reuse it for other projects. And depending on our domain,
-// we can potentially write this part of the code in a completely
-// different language. Remember, in our networking application we
-// are just passing data back and forth between two endpoints after all.
-
-// Some nice resources to learn more about packet sending can be found:
-// https://www.sfml-dev.org/tutorials/2.5/network-packet.php
-
-
 // Include our Third-Party SFML Header
 #include <SFML/Network.hpp>
 
@@ -33,19 +21,6 @@ using namespace std;
 
 // Create a non-blocking TCP server
 class TCPServer {
-public:
-    // Default Constructor
-    TCPServer();
-    // Default Destructor
-    ~TCPServer();
-    // Start the server
-    bool start();
-    bool connectServer(string name, sf::IpAddress address, unsigned short port);
-    // Stops the server from running and removes all clients
-    int stop();
-    unsigned short getPort();
-    int getClients();
-    bool m_start;
 
 private:
 
@@ -55,7 +30,6 @@ private:
     // What to do when the client leaves the server
     int removeClient(sf::TcpSocket *socket);
 
-    //int broadcastMessage(string s, sf::IpAddress ip);
     // Sends a new packet to all connected clients
     int broadcastCommandPacket(const string &username, sf::Packet packet);
 
@@ -70,7 +44,7 @@ private:
     // A TCP Socket for our server
     sf::TcpSocket m_socket;
     sf::TcpListener m_listener;
-    // Dictionary to store each clients commands
+    // Map to store each clients commands
     // Vector to keep track of clients
     vector<sf::TcpSocket *> m_clients;
     // Store packets and client ids
@@ -82,6 +56,27 @@ private:
     vector<sf::Packet> m_packetHistory;
     // A data structure to hold all of the messages sent
     vector<Command> m_commandshistory;
+
+public:
+    //Member Variables
+    bool m_start;
+
+    //Member Functions
+    // Default Constructor
+    TCPServer();
+    // Default Destructor
+    ~TCPServer();
+
+    // Stops the server from running and removes all clients
+    int stop();
+    // Start the server
+    void start();
+    //Connect server to port
+    bool connectServer(string name, sf::IpAddress address, unsigned short port);
+
+    //Getters
+    int getClients();
+    unsigned short getPort() const;
 
 };
 

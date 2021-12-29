@@ -27,28 +27,6 @@ enum HeaderType : sf::Uint8 {
 
 // Create a non-blocking TCPClient
 class TCPClient {
-public:
-
-    // Default Constructor
-    TCPClient(string username, unsigned short port);
-    // Default Destructor
-    ~TCPClient();
-    // Handles client attempting to join server
-    bool joinServer(sf::IpAddress serverAddress, unsigned short serverPort);
-    // Send data to server
-    int sendCommand(sf::Packet packet);
-    // Send String to server
-    // Receive data from the server
-    sf::Packet receiveData();
-    // Get username
-    string getUsername();
-    // Check is client is connected to server
-    bool diconnected();
-    // Get IPAddress
-    sf::IpAddress getIpAddress();
-    // Get client Port
-    int getPort();
-    sf::TcpSocket *getSocket();
 
 private:
     // Information about our user and connection
@@ -65,6 +43,28 @@ private:
     // with another machine in the world.
     sf::TcpSocket m_socket;
     sf::Packet m_packet;
+
+public:
+
+    // Default Constructor
+    TCPClient(string username, unsigned short port);
+    // Default Destructor
+    ~TCPClient();
+    // Handles client attempting to join server
+    int joinServer(sf::IpAddress serverAddress, unsigned short serverPort);
+    // Send data to server
+    void sendCommand(sf::Packet packet);
+    // Receive data from the server
+    sf::Packet receiveData();
+
+    // Check is client is connected to server
+    bool diconnected();
+
+    //Getters
+    int getPort() const;
+    string getUsername();
+    sf::IpAddress getIpAddress();
+    sf::TcpSocket *getSocket();
 };
 
 #endif

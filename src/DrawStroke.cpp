@@ -15,8 +15,12 @@
 #include "Draw.hpp"
 using namespace std;
 
+//Constructor
 DrawStroke::DrawStroke() : Command("Draw in a continual line"), CompositeCommand("Draw in a continual line") {}
 
+/*! \brief 	Compares two commands to see if they're equal
+*
+*/
 bool DrawStroke::operator==(Command &cmd) const {
     // Check if given Command is also a DrawStroke
     if (typeid(this) != typeid(cmd)) {
@@ -43,7 +47,7 @@ bool DrawStroke::operator==(Command &cmd) const {
     return isEqual;
 }
 
-/*! \brief 	N/A
+/*! \brief Executes a drawstroke command
 *		
 */
 bool DrawStroke::execute() {
@@ -54,7 +58,7 @@ bool DrawStroke::execute() {
     return true;
 }
 
-/*! \brief 	N/A
+/*! \brief 	Undoes a drawstroke command
 *		
 */
 bool DrawStroke::undo() {
@@ -65,10 +69,17 @@ bool DrawStroke::undo() {
     return true;
 }
 
+
+/*! \brief 	Returns all draw commands in drawstroke command
+*
+*/
 deque<Draw> DrawStroke::getDraws() {
     return deque(m_draws);
 }
 
+/*! \brief 	Executes a drawstroke command
+*
+*/
 void DrawStroke::addAndExecuteDraw(Draw newDraw) {
     if (!m_draws.empty()) {
         Draw previousDraw = m_draws.back();
@@ -81,6 +92,9 @@ void DrawStroke::addAndExecuteDraw(Draw newDraw) {
     newDraw.execute();
 }
 
+/*! \brief 	And and executes a new draw command
+*
+*/
 [[maybe_unused]] void DrawStroke::addAndExecuteCommand(Command *command) {
     Draw *newDraw = dynamic_cast<Draw *>(command);
 

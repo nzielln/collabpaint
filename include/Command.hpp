@@ -20,8 +20,10 @@ using namespace std;
 // The command class
 class Command {
 public:
+    //Constructor
     explicit Command(string commandDescription);
 
+    //Destructor
     virtual ~Command();
 
     // Commands must overload equality

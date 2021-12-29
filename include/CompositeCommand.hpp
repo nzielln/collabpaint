@@ -16,6 +16,7 @@ using namespace std;
 // The command class
 class CompositeCommand : public virtual Command {
 public:
+    //Constructor
     explicit CompositeCommand(string commandDescription);
 
     // Adds a new command to the collection

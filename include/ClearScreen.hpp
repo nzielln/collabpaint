@@ -19,8 +19,7 @@ class ClearScreen : public Command {
 private:
     sf::Image *m_image{};
 
-    static string
-    generateCommandDescription(sf::Color prevColor, sf::Color newColor);
+    static string generateCommandDescription(sf::Color prevColor, sf::Color newColor);
 
 public:
     // Construct ClearScreen from App values
@@ -29,12 +28,12 @@ public:
     // Construct ClearScreen with selected color as the new color
     ClearScreen(sf::Image *image, sf::Color prevColor, sf::Color newColor);
 
+    //Destructor
     ~ClearScreen() override;
 
     bool operator==(Command &cmd) const override;
 
     bool execute() override;
-
     bool undo() override;
 
     // These are safe to expose without a getter/setter because they are constant

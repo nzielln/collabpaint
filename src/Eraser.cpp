@@ -1,7 +1,7 @@
 /**
  *  @file   Eraser.cpp
  *  @brief  Eraser implementation, all drawing actions are commands.
- *  @author Mike and Skye
+ *  @author Mike, Skye and Ellah
  *  @date   2021-12-11
  ***********************************************/
 
@@ -16,6 +16,7 @@
 #include "Eraser.hpp"
 using namespace std;
 
+//Constructor
 Eraser::Eraser(App *app) : Eraser(
         &app->getImage(),
         app->mouseX,
@@ -80,6 +81,9 @@ string Eraser::generateCommandDescription_b(
     return ss.str();
 }
 
+/*! \brief 	Compares two commands to see if they're equal
+*
+*/
 bool Eraser::operator==(Command &cmd) const {
     // Check if given Command is also a Draw
     if (typeid(this) != typeid(cmd)) {
@@ -95,7 +99,7 @@ bool Eraser::operator==(Command &cmd) const {
             this->m_newColor == other->m_newColor;
 }
 
-/*! \brief 	N/A
+/*! \brief 	Executes a new eraser command
 *
 */
 bool Eraser::execute() {
@@ -117,7 +121,7 @@ bool Eraser::execute() {
     return true;
 }
 
-/*! \brief 	N/A
+/*! \brief 	Undoes an eraser command
 *
 */
 bool Eraser::undo() {
@@ -145,4 +149,7 @@ sf::Image *Eraser::getImage() {
     return m_image;
 }
 
+/*! \brief 	Destructor
+*
+*/
 Eraser::~Eraser() = default;

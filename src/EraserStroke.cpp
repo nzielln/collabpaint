@@ -1,7 +1,7 @@
 /**
  *  @file   EraserStroke.cpp
  *  @brief  EraserStroke implementation, all erasing actions are commands.
- *  @author Mike and Skye
+ *  @author Mike, Skye and Ellah
  *  @date   2021-12-11
  ***********************************************/
 
@@ -17,8 +17,12 @@
 #include "Eraser.hpp"
 using namespace std;
 
+//Constructor
 EraserStroke::EraserStroke() : Command("Erase in a continual line"), CompositeCommand("Erase in a continual line") {}
 
+/*! \brief 	Compares two commands to see if they're equal
+*
+*/
 bool EraserStroke::operator==(Command &cmd) const {
     // Check if given Command is also a EraserStroke
     if (typeid(this) != typeid(cmd)) {
@@ -45,7 +49,7 @@ bool EraserStroke::operator==(Command &cmd) const {
     return isEqual;
 }
 
-/*! \brief 	N/A
+/*! \brief 	Executes a new eraser command
 *
 */
 bool EraserStroke::execute() {
@@ -56,7 +60,7 @@ bool EraserStroke::execute() {
     return true;
 }
 
-/*! \brief 	N/A
+/*! \brief 	Undoes an eraserstroke command
 *
 */
 bool EraserStroke::undo() {
@@ -67,6 +71,9 @@ bool EraserStroke::undo() {
     return true;
 }
 
+/*! \brief 	Returns all eraser commands in eraserstroke
+*
+*/
 deque<Eraser> EraserStroke::getErasers() {
     return deque(m_eraser);
 }
@@ -83,6 +90,10 @@ void EraserStroke::addAndExecuteDraw(Eraser newEraser) {
     newEraser.execute();
 }
 
+
+/*! \brief 	And and executes a new eraser command
+*
+*/
 [[maybe_unused]] void EraserStroke::addAndExecuteCommand(Command *command) {
     Eraser *newEraser = dynamic_cast<Eraser *>(command);
 
@@ -123,4 +134,7 @@ void EraserStroke::interpolate(Eraser newestEraser) {
     }
 }
 
+/*! \brief 	Destructor
+*
+*/
 EraserStroke::~EraserStroke() = default;

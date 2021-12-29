@@ -28,12 +28,12 @@ public:
     // Construct DrawBrush with given new color and radius
     DrawBrush(sf::Image *image, unsigned int posX, unsigned int posY, unsigned int rad, sf::Color newColor);
 
+    //Destructor
     ~DrawBrush() override;
 
     bool operator==(Command &cmd) const override;
 
     bool execute() override;
-
     bool undo() override;
 
     sf::Image *getImage();

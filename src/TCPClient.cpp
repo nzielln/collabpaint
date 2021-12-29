@@ -9,13 +9,14 @@
 #include "TCPClient.hpp"
 // Include standard library C++ libraries.
 #include <iostream>
+#include <utility>
 using namespace std;
 
 /*! \brief 	Client constructor
 *
 */
 TCPClient::TCPClient(string username, unsigned short port) {
-    m_username = username;
+    m_username = std::move(username);
     m_port = port;
 }
 
@@ -29,7 +30,7 @@ TCPClient::~TCPClient() {
 /*! \brief 	Connects client to server
 *
 */
-bool TCPClient::joinServer(sf::IpAddress serverAddress, unsigned short serverPort) {
+int TCPClient::joinServer(sf::IpAddress serverAddress, unsigned short serverPort) {
     cout << "TCPClient will attemp to join server: " << endl;
     m_serverIpAddress = serverAddress;
     m_serverPort = serverPort;
@@ -55,13 +56,13 @@ bool TCPClient::joinServer(sf::IpAddress serverAddress, unsigned short serverPor
 
     // Always call this to be receiving data
     receiveData();
-
+    return 0;
 }
 
 /*! \brief 	Send command to server
 *
 */
-int TCPClient::sendCommand(sf::Packet packet) {
+void TCPClient::sendCommand(sf::Packet packet) {
     if (packet.getDataSize() > 0 && m_socket.send(packet) == sf::Socket::Done) {
         cout << "New packet was successfully sent to server.\n";
     } else {
@@ -76,7 +77,6 @@ int TCPClient::sendCommand(sf::Packet packet) {
 *
 */
 sf::Packet TCPClient::receiveData() {
-
     sf::Packet packet;
     sf::Uint8 header, ncolor, radius;
     string username;
@@ -138,7 +138,7 @@ string TCPClient::getUsername() {
 /*! \brief 	Returns client's port
 *
 */
-int TCPClient::getPort() {
+int TCPClient::getPort() const {
     return m_port;
 }
 
@@ -159,7 +159,6 @@ bool TCPClient::diconnected() {
     }
 
     return false;
-
 }
 
 /*! \brief 	Returns client's socket

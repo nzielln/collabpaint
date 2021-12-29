@@ -15,7 +15,7 @@
 #include "App.hpp"
 using namespace std;
 
-// See comment in Draw.hpp
+// Constructors
 Draw::Draw(App *app) : Draw(
         &app->getImage(),
         app->mouseX,
@@ -44,6 +44,9 @@ string Draw::generateCommandDescription(
     return ss.str();
 }
 
+/*! \brief 	Compares two draw commands to see if they're equal
+*
+*/
 bool Draw::operator==(Command &cmd) const {
     // Check if given Command is also a Draw
     if (typeid(this) != typeid(cmd)) {
@@ -57,7 +60,7 @@ bool Draw::operator==(Command &cmd) const {
            this->m_newColor == other->m_newColor;
 }
 
-/*! \brief 	N/A
+/*! \brief 	Executes a draw command
 *
 */
 bool Draw::execute() {
@@ -66,7 +69,7 @@ bool Draw::execute() {
     return true;
 }
 
-/*! \brief 	N/A
+/*! \brief 	Undoes a draw command
 *
 */
 bool Draw::undo() {
@@ -83,4 +86,7 @@ sf::Image *Draw::getImage() {
     return m_image;
 }
 
+/*! \brief 	Draw command destructor
+*
+*/
 Draw::~Draw() = default;

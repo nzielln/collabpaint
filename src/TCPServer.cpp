@@ -10,11 +10,9 @@
 #include <iostream>
 #include <map>
 #include <utility>
-#include <time.h>
-#include <unistd.h>
 using namespace std;
 
-/*! \brief
+/*! \brief Defualt Constructor
 *
 */
 TCPServer::TCPServer() {}
@@ -37,7 +35,6 @@ bool TCPServer::connectServer(string name, sf::IpAddress address, unsigned short
         start();
         return true;
     }
-
 }
 
 /*! \brief Destructor
@@ -52,7 +49,7 @@ TCPServer::~TCPServer() {
  *   a connected client is sending data and then handles it
 */
 // A little long but it kinda works so imma leave it for now :)
-bool TCPServer::start() {
+void TCPServer::start() {
     cout << "Starting TCP Network server" << endl;
 
     while (m_start) {
@@ -140,7 +137,6 @@ bool TCPServer::start() {
                             //If disconnect request, handle appropriately
                             removeClient(c);
                         }
-
                     }
                 }
             }
@@ -178,7 +174,6 @@ int TCPServer::stop() {
 */
 int TCPServer::joiningClient(sf::TcpSocket *client) {
     cout << "Updating new client\n";
-
 
     // Iterate through every packet sent and send it to the client.
     for (auto &i: m_packetHistory) {
@@ -223,7 +218,6 @@ int TCPServer::broadcastCommandPacket(const string &username, sf::Packet packet)
 
     // Send the data to all clients
     for (auto &m_activeClient: m_activeClients) {
-        // TODO - Don't send it to the client that just sent it...
         if (m_activeClient.first != username) {
             cout << "Sending to: " << m_activeClient.first << endl;
             sf::TcpSocket &client = *m_activeClient.second;
@@ -247,6 +241,6 @@ int TCPServer::getClients() {
 /*! \brief 	Returns server's port
 *
 */
-unsigned short TCPServer::getPort() {
+unsigned short TCPServer::getPort() const {
     return m_port;
 }

@@ -26,16 +26,16 @@ private:
     void addAndExecuteDraw(Eraser newEraser);
 
 public:
+    //Constructor
     explicit EraserStroke();
 
+    //Destructor
     ~EraserStroke() override;
 
     bool operator==(Command &cmd) const override;
 
     bool execute() override;
-
     bool undo() override;
-
     [[maybe_unused]] void addAndExecuteCommand(Command *c) override;
 
     // Returns a copy of the draws currently in this EraserStroke

@@ -62,22 +62,20 @@ private:
 
 // Store the address of our function pointer for each of the callback functions.
     void (*m_updateFunc)(App *);
-
     void (*m_drawFunc)(App *);
 
     void executeCommand(Command *c);
 
     void drawLayout();
-
     void handleGUIInput();
 
 public:
 // Member Variables
     unsigned int mouseX, mouseY;
+    int selectedMode = DRAW_MODE;
     sf::Uint8 brushRadius;
     sf::Color selectedColor = sf::Color::Black;
     sf::Color backgroundColor = sf::Color::White;
-    int selectedMode = DRAW_MODE;
     map<string, CompositeCommand *> m_inProgressCommands;
     queue<sf::Packet> m_packets;
 
@@ -90,55 +88,42 @@ public:
     static const vector<PresetColor> PRESET_COLORS;
 
 // Member functions
-    App(void (*updateFunction)(App *), void (*drawFunction)(App *));
-
-    void addCommand(Command *c);
-
-    void startComposite(const string &username, CompositeCommand *c);
-
-    void endComposite(const string &username);
-
-    void addToComposite(const string &username, Command *c);
-
-    void undoCommand();
-
-    void redoCommand();
-
-    Command *getCommand();
-
+    //Getters
     sf::Image &getImage();
-
     sf::Texture &getTexture();
-
     sf::RenderWindow &getWindow();
-
     sf::Clock &getClock();
-
-    static sf::Uint8 getColorNumber(sf::Color color);
+    sf::Color getBGColor();
+    TCPClient *getClient();
 
     int getMode();
+    [[nodiscard]] sf::Uint8 getRadius() const;
+    static sf::Uint8 getColorNumber(sf::Color color);
 
-    sf::Color getBGColor();
-
+    //Setters
+    void setMode(int newMode);
     void setBGColor(sf::Color newBGColor);
 
-    void incrementBrushRadius();
-
-    void decrementBrushRadius();
-
-    void setMode(int newMode);
-
-    void destroy();
-
-    void loop();
+    //Other
+    //Constructor
+    App(void (*updateFunction)(App *), void (*drawFunction)(App *));
 
     void addClient(TCPClient *client);
 
-    TCPClient *getClient();
+    void startComposite(const string &username, CompositeCommand *c);
+    void endComposite(const string &username);
+    void addToComposite(const string &username, Command *c);
+    void addCommand(Command *c);
+    void undoCommand();
+    void redoCommand();
 
-    void addToUndo(Command *c);
+    void incrementBrushRadius();
+    void decrementBrushRadius();
 
-    [[nodiscard]] sf::Uint8 getRadius() const;
+    void destroy();
+    void loop();
+
+
 };
 
 #endif

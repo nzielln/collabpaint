@@ -25,27 +25,28 @@ class Eraser : public Command {
 private:
     sf::Image *m_image{};
 
-    static string
-    generateCommandDescription_a(unsigned int posX, unsigned int posY, unsigned int rad, sf::Color prevColor, sf::Color newColor);
-    static string generateCommandDescription_b(unsigned int posX, unsigned int posY, unsigned int rad, sf::Color newColor);
+    static string generateCommandDescription_a(unsigned int posX, unsigned int posY, unsigned int rad,
+                                               sf::Color prevColor, sf::Color newColor);
+    static string generateCommandDescription_b(unsigned int posX, unsigned int posY, unsigned int rad,
+                                               sf::Color newColor);
 
 
 public:
-    // Construct Draw from App values
+    // Construct Eraser from App values
     explicit Eraser(App *app);
 
     // Grab prevColor from image
     Eraser(sf::Image *image, unsigned int posX, unsigned int posY, unsigned int rad, sf::Color newColor);
 
     // Default constructor
-    Eraser(sf::Image *image, unsigned int posX, unsigned int posY, unsigned int rad, sf::Color prevColor, sf::Color newColor);
+    Eraser(sf::Image *image, unsigned int posX, unsigned int posY, unsigned int rad, sf::Color prevColor,
+           sf::Color newColor);
 
     ~Eraser() override;
 
     bool operator==(Command &cmd) const override;
 
     bool execute() override;
-
     bool undo() override;
 
     sf::Image *getImage();
@@ -54,7 +55,6 @@ public:
     const unsigned int m_posX;
     const unsigned int m_posY;
     const unsigned int m_radius;
-    //sf::Color m_prevColor;
     vector<vector<sf::Color>> m_prevColors;
     sf::Color m_newColor;
 };

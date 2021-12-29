@@ -1,7 +1,7 @@
 /**
  *  @file   main.cpp
  *  @brief  Entry point into the program.
- *  @author Mike and Skye
+ *  @author Mike, Skye and Ellah
  *  @date   2021-12-11
  ***********************************************/
 
@@ -25,19 +25,19 @@
 #include "EraserStroke.hpp"
 using namespace std;
 
-
-map<string, CompositeCommand*> incomingCommands;
-
 void executeReceivedCommands(App *app) {
     sf::Uint8 header, ncolor, radius;
     sf::Vector2i pos;
     string name, username;
+
     DrawBrush *db;
     Eraser *er;
-    sf::Color c;
     ClearScreen *cs;
+
+    sf::Color c;
     sf::Packet p = app->getClient()->receiveData();
     map<string, CompositeCommand*>::iterator it;
+
     p >> header >> username;
 
     switch (header) {
@@ -45,17 +45,14 @@ void executeReceivedCommands(App *app) {
             p >> pos.x >> pos.y >> ncolor >> radius;
             db = new DrawBrush(&app->getImage(), pos.x, pos.y, radius, App::PRESET_COLORS[ncolor - 1].color);
             db->execute();
-            app->addToUndo(db);
             break;
         case ERASER:
             p >> pos.x >> pos.y >> radius;
             er = new Eraser(&app->getImage(), pos.x, pos.y, radius, app->getBGColor());
             er->execute();
-            app->addToUndo(er);
         case CLEARSCREEN:
-            cs = new ClearScreen(&app->getImage(), app->selectedColor, app->getBGColor());
+            cs = new ClearScreen(app);
             cs->execute();
-            app->addToUndo(cs);
         case UNDO:
             app->undoCommand();
             break;
@@ -158,7 +155,7 @@ void update(App *app) {
                         break;
                 }
             } else if (event.type == sf::Event::MouseButtonPressed &&
-                       app->getWindow().hasFocus()) { // Begin new CompositeCommand on initial mouse down
+                       app->getWindow().hasFocus()) {
                 packet.clear();
                 CompositeCommand *cc;
                 map<string, CompositeCommand*>::iterator it;
@@ -178,10 +175,8 @@ void update(App *app) {
                 app->getClient()->sendCommand(packet);
                 app->startComposite(username, cc);
 
-                //packet.clear();
-
                 lostFocusSinceDrawing = false;
-            } else if (event.type == sf::Event::LostFocus) { // End current CompositeCommand on loss of focus or mouse up
+            } else if (event.type == sf::Event::LostFocus) {
                 lostFocusSinceDrawing = true;
             } else if (event.type == sf::Event::LostFocus ||
                        event.type == sf::Event::MouseButtonReleased) {
@@ -201,7 +196,6 @@ void update(App *app) {
 
                 app->getClient()->sendCommand(packet);
                 app->endComposite(username);
-
             }
         }
 
@@ -243,7 +237,6 @@ void update(App *app) {
             }
         }
     }
-
 }
 
 /*! \brief 	The draw call
@@ -281,7 +274,6 @@ int main() {
             cout << "Sorry, that port isn't available. Try a different port: \n";
             cin >> port;
             connected = server.connectServer("Server", sf::IpAddress::getLocalAddress(), port);
-
         }
 
     } else if (role[0] == 'c' || role[0] == 'C') {
@@ -301,7 +293,6 @@ int main() {
         // destroy our app
         app.destroy();
     }
-
 
     return 0;
 }

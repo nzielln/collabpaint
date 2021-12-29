@@ -1,13 +1,9 @@
 /**
  *  @file   App.cpp
  *  @brief  Main class for program
- *  @author Mike and Skye
+ *  @author Mike, Skye and Ellah
  *  @date   2021-12-11
  ***********************************************/
-
-// Include some standard libraries
-// The 'C-based' libraries are needed for Nuklear GUI
-
 
 // NUKLEAR - for our GUI
 #define NK_INCLUDE_FIXED_TYPES
@@ -20,12 +16,13 @@
 #define NK_IMPLEMENTATION
 #define NK_SFML_GL2_IMPLEMENTATION
 
+// Include some standard libraries
+// The 'C-based' libraries are needed for Nuklear GUI
 #include <stdarg.h>
 #include <string.h>
 #include <OpenGL/gl.h>
 #include "nuklear.h"
 #include "nuklear_sfml_gl2.h"
-
 
 // Include our Third-Party SFML header
 #include <SFML/Graphics.hpp>
@@ -91,6 +88,8 @@ const vector<PresetColor> App::PRESET_COLORS = { // NOLINT(cert-err58-cpp,cppcor
         }
 };
 
+/*! \brief App Constructor
+ */
 App::App(void (*updateFunction)(App *), void (*drawFunction)(App *)) {
     m_updateFunc = updateFunction;
     m_drawFunc = drawFunction;
@@ -155,7 +154,6 @@ App::App(void (*updateFunction)(App *), void (*drawFunction)(App *)) {
 *
 */
 void App::drawLayout() {
-
     if (nk_begin(ctx, "Settings", nk_rect(0, 0, GUI_WIDTH, WINDOW_HEIGHT),
                  NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
 
@@ -163,11 +161,9 @@ void App::drawLayout() {
         nk_layout_row_static(ctx, 30, 90, 2);
         if (nk_button_label(ctx, "Undo")) {
             undoCommand();
-
         }
         if (nk_button_label(ctx, "Redo")) {
             redoCommand();
-
         }
 
         // Spacer
@@ -254,7 +250,6 @@ void App::endComposite(const string &username) {
         m_inProgressCommands.erase(it);
         m_commands.push_front(it->second);
     }
-
 }
 
 /*! \brief 	Add and execute the given Command to the CompositeCommand associated with the given username
@@ -310,7 +305,6 @@ void App::undoCommand() {
 
         m_undo.push(m_commands.front());
         m_commands.pop_front();
-
     }
 }
 
@@ -357,7 +351,6 @@ sf::Clock &App::getClock() {
     return *m_clock;
 }
 
-
 /*! \brief Gets the selectedColor of the app
  *
  */
@@ -365,13 +358,12 @@ sf::Color App::getBGColor() {
     return backgroundColor;
 }
 
-/*! \brief Gets the selectedMode of the app
+/*! \brief Gets the app's current mode
  *
  */
 int App::getMode() {
     return selectedMode;
 }
-
 
 /*! \brief Sets the background color of the app to be the color that the user inputs
  *
@@ -396,6 +388,8 @@ void App::destroy() {
     delete m_texture;
 }
 
+/*! \brief Handles GUI input
+ */
 void App::handleGUIInput() {
     // Capture events in our main window
     sf::Event event; // NOLINT(cppcoreguidelines-pro-type-member-init)
@@ -438,7 +432,6 @@ void App::loop() {
 #pragma clang diagnostic pop
         nk_sfml_render(NK_ANTI_ALIASING_ON);
         gui_window->display();
-
         // Clear the window
         m_window->clear();
         // Updates specified by the user
@@ -447,24 +440,28 @@ void App::loop() {
         // Additional drawing specified by user
         m_drawFunc(this);
         // Update the texture
-        // Note: This can be done in the 'draw call'
         // Draw to the canvas
         m_window->draw(*m_sprite);
         // Display the canvas
         m_window->display();
-
     }
 }
 
+/*! \brief Adds a client to the app
+ */
 void App::addClient(TCPClient *client) {
     m_client = client;
     m_client->joinServer(m_client->getIpAddress(), m_client->getPort());
 }
 
+/*! \brief Retunrs the client attached to the app
+ */
 TCPClient *App::getClient() {
     return m_client;
 }
 
+/*! \brief Returns number associated with a specific color
+ */
 sf::Uint8 App::getColorNumber(sf::Color color) {
     if (color == sf::Color::Black) {
         return 1;
@@ -487,13 +484,10 @@ sf::Uint8 App::getColorNumber(sf::Color color) {
     }
 }
 
+/*! \brief Returns the current radius
+ */
 sf::Uint8 App::getRadius() const {
     return brushRadius;
-}
-
-
-void App::addToUndo(Command *c) {
-    //m_commands.push_front(c);
 }
 
 /*! \brief Increase brush radius by 1

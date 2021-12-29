@@ -9,13 +9,13 @@
 #include <SFML/Graphics/Color.hpp>
 // Include standard library C++ libraries.
 #include <sstream>
-#include <iostream>
 #include <cmath>
 // Project header files
 #include "App.hpp"
 #include "DrawBrush.hpp"
 using namespace std;
 
+//Constructors
 DrawBrush::DrawBrush(App *app) : DrawBrush(
         &app->getImage(),
         app->mouseX,
@@ -59,6 +59,9 @@ string DrawBrush::generateCommandDescription(
     return ss.str();
 }
 
+/*! \brief 	Compares two commands to see if they're equal
+*
+*/
 bool DrawBrush::operator==(Command &cmd) const {
     // Check if given Command is also a DrawBrush
     if (typeid(this) != typeid(cmd)) {
@@ -74,7 +77,7 @@ bool DrawBrush::operator==(Command &cmd) const {
             this->m_newColor == other->m_newColor;
 }
 
-/*! \brief 	N/A
+/*! \brief 	Executes a drawbrush command
 *
 */
 bool DrawBrush::execute() {
@@ -94,7 +97,7 @@ bool DrawBrush::execute() {
     return true;
 }
 
-/*! \brief 	N/A
+/*! \brief 	Undoes a drawbrush command
 *
 */
 bool DrawBrush::undo() {
@@ -114,8 +117,15 @@ bool DrawBrush::undo() {
     return true;
 }
 
+/*! \brief 	Return a reference to our m_image, so that
+*		we do not have to publicly expose it.
+*
+*/
 sf::Image *DrawBrush::getImage() {
     return m_image;
 }
 
+/*! \brief 	Destructor
+*
+*/
 DrawBrush::~DrawBrush() = default;

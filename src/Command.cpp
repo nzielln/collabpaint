@@ -11,12 +11,12 @@
 #include "Command.hpp"
 using namespace std;
 
-/*! \brief 	N/A
+/*! \brief 	Default Command constructor
 *		
 */
 Command::Command(string commandDescription) : m_commandDescription(move(commandDescription)) {}
 
-/*! \brief 	N/A
+/*! \brief 	Default Command destructor
 *		
 */
 Command::~Command() = default;

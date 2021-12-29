@@ -27,16 +27,16 @@ private:
     void addAndExecuteDraw(DrawBrush newDraw);
 
 public:
+    //Constructor
     explicit BrushStroke();
 
+    //Destructor
     ~BrushStroke() override;
 
     bool operator==(Command &cmd) const override;
 
     bool execute() override;
-
     bool undo() override;
-
     void addAndExecuteCommand(Command *c) override;
 
     // Returns a copy of the DrawBrushes currently in this BrushStroke
