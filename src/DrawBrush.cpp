@@ -9,6 +9,7 @@
 #include <SFML/Graphics/Color.hpp>
 // Include standard library C++ libraries.
 #include <sstream>
+#include <iostream>
 #include <cmath>
 // Project header files
 #include "App.hpp"
@@ -97,6 +98,7 @@ bool DrawBrush::execute() {
 *
 */
 bool DrawBrush::undo() {
+
     unsigned int minX = m_posX - m_radius;
     unsigned int minY = m_posY - m_radius;
     unsigned int size = 2 * m_radius;

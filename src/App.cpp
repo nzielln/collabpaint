@@ -238,25 +238,20 @@ void App::addCommand(Command *c) {
 */
 void App::startComposite(const string &username, CompositeCommand *c) {
     m_inProgressCommands.emplace(pair<string, CompositeCommand *>(username, c));
+
 }
 
 /*! \brief End and destroy the CompositeCommand associated with the given username
 *
 */
 void App::endComposite(const string &username) {
-    vector<CompositeCommand *> todel;
     map<string, CompositeCommand *>::iterator it;
-    for (it = m_inProgressCommands.begin(); it != m_inProgressCommands.end(); ++it) {
-        if (it->first == username) {
-            todel.push_back(it->second);
-            m_inProgressCommands.erase(it->first);
-            break;
-        }
+    it = m_inProgressCommands.find(username);
+    if (it != m_inProgressCommands.end()) {
+        m_inProgressCommands.erase(it);
+        m_commands.push_front(it->second);
     }
 
-    for(auto &t : todel) {
-        m_commands.push_front(t);
-    }
 }
 
 /*! \brief 	Add and execute the given Command to the CompositeCommand associated with the given username
@@ -266,7 +261,7 @@ void App::addToComposite(const string &username, Command *c) {
     try {
         CompositeCommand *composite = m_inProgressCommands.at(username);
         composite->addAndExecuteCommand(c);
-        m_commands.push_front(c);
+        //m_commands.push_front(c);
     } catch (out_of_range) {
         cerr << username << " has no CompositeCommand to add to" << endl;
     }
@@ -307,8 +302,10 @@ void App::executeCommand(Command *c) {
 *
 */
 void App::undoCommand() {
+
     if (!m_commands.empty()) {
         m_commands.front()->undo();
+        cout << m_commands.front()->m_commandDescription << endl;
 
         m_undo.push(m_commands.front());
         m_commands.pop_front();
@@ -320,6 +317,7 @@ void App::undoCommand() {
 *
 */
 void App::redoCommand() {
+
     if (!m_undo.empty()) {
         App::executeCommand(m_undo.top());
         m_undo.pop();
@@ -494,7 +492,7 @@ sf::Uint8 App::getRadius() const {
 
 
 void App::addToUndo(Command *c) {
-    m_commands.push_front(c);
+    //m_commands.push_front(c);
 }
 
 /*! \brief Increase brush radius by 1
