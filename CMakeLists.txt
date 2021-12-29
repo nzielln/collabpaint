@@ -57,9 +57,6 @@ else()
     endif()
 endif()
 
-# Which packages do we need to find
-#find_package(SFML REQUIRED COMPONENTS network window graphics system)
-
 # Where to find our header files
 include_directories(SYSTEM "./_deps/sfml-src/include")
 
